@@ -11,6 +11,11 @@
 #define IR_3 8
 #define IR_4 12
 
+#define MOTOR_PIN1 3
+#define MOTOR_PIN2 5
+#define MOTOR_PIN3 6
+#define MOTOR_PIN4 9
+
 void setup() {
   // put your setup code here, to run once:
 
@@ -19,6 +24,12 @@ void setup() {
   pinMode(IR_2, INPUT);
   pinMode(IR_3, INPUT);
   pinMode(IR_4, INPUT);
+
+  // setup motor pins
+  pinMode(MOTOR_PIN1, OUTPUT);
+  pinMode(MOTOR_PIN2, OUTPUT);
+  pinMode(MOTOR_PIN3, OUTPUT);
+  pinMode(MOTOR_PIN4, OUTPUT);
 }
 
 unsigned long irSensorMillis = 0; // timer to track the last report of the IR sensors
@@ -41,4 +52,18 @@ void loop() {
     colorSensorMillis = currentMillis;
     readColorSensor();
   }
+
+  /*
+    test motor control by creating a routine that moves
+    the robot forward for 1 second and then turns 90 degrees right.
+    you will have to adjust the delay after the turn to make it a perfect square.
+  */
+  motorControl(255, 255); // go forward
+  delay(1000);
+  motorControl(0, 0); // stop momentarily
+  delay(100);
+  motorControl(255, -255); // turn to the right
+  delay(500);
+  motorControl(0, 0); // stop momentarily
+  delay(100);
 }
