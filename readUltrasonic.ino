@@ -1,8 +1,4 @@
-// global variables for distance and duration
-long duration = 0.0;
-int distance = 0;
-
-void readUltrasonic() {
+int readUltrasonic() {
   // clear the trigger pin
   digitalWrite(US_TRIG, LOW);
   delayMicroseconds(2);
@@ -13,10 +9,11 @@ void readUltrasonic() {
   digitalWrite(US_TRIG, LOW);
 
   // read the echo pin, returns the sound wave travel time in microseconds
-  duration = pulseIn(US_ECHO, HIGH);
+  long duration = pulseIn(US_ECHO, HIGH);
 
   // calculate distance
-  distance = duration * 0.034 / 2;
+  int distance = duration * 0.034 / 2;
+  currentDistance = distance;
 
   // print the distance
   Serial.println("Distance: " + distance);

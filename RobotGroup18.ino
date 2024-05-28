@@ -1,5 +1,5 @@
 #include <tcs3200.h>
-#include <WiFiNINA.h>
+//#include <WiFiNINA.h>
 
 #define COLOR_0 A0
 #define COLOR_1 A1
@@ -35,9 +35,9 @@ void setup() {
   pinMode(IR_4, INPUT);
 
   // setup onboard RGB LED pins
-  WiFiDrv::pinMode(LED_R, OUTPUT); //define GREEN LED
+  /*WiFiDrv::pinMode(LED_R, OUTPUT); //define GREEN LED
   WiFiDrv::pinMode(LED_G, OUTPUT); //define RED LED
-  WiFiDrv::pinMode(LED_B, OUTPUT); //define BLUE LED
+  WiFiDrv::pinMode(LED_B, OUTPUT); //define BLUE LED */
 
   // setup motor pins
   pinMode(MOTOR_PIN1, OUTPUT);
@@ -50,17 +50,28 @@ void setup() {
   pinMode(US_ECHO, INPUT);
 }
 
-String currentState = "null";
+// state logic
+String currentState = "Null";
+String oldCurrentState = "Null";
+
+// turning logic
+String turnDirection = ""; // keep track of the current turn direction.
+String lastTurnDirection = ""; // store the last turn direction to decide the next turn if sharp turn is detected.
+bool isTurning = false; // flag to show if the robot is turning or not.
+bool wallDetected = false; // flag to show if the robot has detected a wall with the ultrasonic sensor
+
+int currentDistance = 0;
 
 unsigned long colorSensorMillis = 0; // timer to track the last report of the color sensors
 unsigned long irSensorMillis = 0; // timer to track the last report of the IR sensors
 unsigned long ultrasonicSensorMillis = 0; // timer to track the last report of the ultrasonic sensor
+unsigned long currentMillis = 0;
 
 void loop() {
   // put your main code here, to run repeatedly:
-  
+
   // get the current run time in milliseconds
-  unsigned long currentMillis = millis();
+  currentMillis = millis();
 
   // check the states of the IR sensors every 500ms
   if (currentMillis - irSensorMillis >= 500) {
@@ -85,12 +96,14 @@ void loop() {
     the robot forward for 1 second and then turns 90 degrees right.
     you will have to adjust the delay after the turn to make it a perfect square.
   */
-  motorControl(255, 255); // go forward
+  /*motorControl(255, 255); // go forward
   delay(1000);
   motorControl(0, 0); // stop momentarily
   delay(100);
   motorControl(255, -255); // turn to the right
   delay(500);
   motorControl(0, 0); // stop momentarily
-  delay(100);
+  delay(100); */
+
+  robotLogic();
 }
