@@ -1,4 +1,5 @@
 #include <tcs3200.h>
+#include <WiFiNINA.h>
 
 #define COLOR_0 A0
 #define COLOR_1 A1
@@ -10,6 +11,10 @@
 #define IR_2 7
 #define IR_3 8
 #define IR_4 12
+
+#define LED_R 25
+#define LED_G 26
+#define LED_B 27
 
 #define MOTOR_PIN1 3
 #define MOTOR_PIN2 5
@@ -29,6 +34,11 @@ void setup() {
   pinMode(IR_3, INPUT);
   pinMode(IR_4, INPUT);
 
+  // setup onboard RGB LED pins
+  WiFiDrv::pinMode(LED_R, OUTPUT); //define GREEN LED
+  WiFiDrv::pinMode(LED_G, OUTPUT); //define RED LED
+  WiFiDrv::pinMode(LED_B, OUTPUT); //define BLUE LED
+
   // setup motor pins
   pinMode(MOTOR_PIN1, OUTPUT);
   pinMode(MOTOR_PIN2, OUTPUT);
@@ -39,6 +49,8 @@ void setup() {
   pinMode(US_TRIG, OUTPUT);
   pinMode(US_ECHO, INPUT);
 }
+
+String currentState = "null";
 
 unsigned long colorSensorMillis = 0; // timer to track the last report of the color sensors
 unsigned long irSensorMillis = 0; // timer to track the last report of the IR sensors
